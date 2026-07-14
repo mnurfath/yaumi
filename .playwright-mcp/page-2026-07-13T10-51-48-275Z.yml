@@ -1,0 +1,31 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - generic [ref=f4e5]:
+      - generic [ref=f4e6]:
+        - generic [ref=f4e7]: A quieter daily rhythm
+        - heading "Yaumi" [level=1] [ref=f4e11]
+        - paragraph [ref=f4e12]: Track your daily adhkar and spiritual routines with ease
+      - generic [ref=f4e13]:
+        - link [ref=f4e14] [cursor=pointer]:
+          - /url: /signup
+          - button "Get Started" [ref=f4e15]
+        - link [ref=f4e16] [cursor=pointer]:
+          - /url: /categories
+          - button "Browse Adhkar" [ref=f4e17]
+    - generic [ref=f4e19]:
+      - heading "Everything you need for your spiritual journey" [level=2] [ref=f4e20]
+      - generic [ref=f4e21]:
+        - generic [ref=f4e23]:
+          - generic [ref=f4e27]: List & Counter
+          - generic [ref=f4e28]: Browse adhkar with Arabic text, transliteration, and translation. Track your progress with a simple tap.
+        - generic [ref=f4e30]:
+          - generic [ref=f4e36]: Swipe Mode
+          - generic [ref=f4e37]: A Tinder-style interface for completing adhkar. Swipe right to mark complete, left to skip.
+        - generic [ref=f4e39]:
+          - generic [ref=f4e43]: Offline PWA
+          - generic [ref=f4e44]: Install Yaumi on your device. Access your adhkar even without an internet connection.
+    - contentinfo [ref=f4e45]:
+      - paragraph [ref=f4e47]: Yaumi - Your daily spiritual companion
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f4e53] [cursor=pointer]
+  - alert [ref=f4e57]

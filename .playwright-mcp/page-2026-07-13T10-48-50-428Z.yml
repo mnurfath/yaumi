@@ -1,0 +1,45 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - banner [ref=f2e3]:
+      - generic [ref=f2e4]:
+        - link "Yaumi" [ref=f2e6] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f2e9]:
+          - link [ref=f2e10] [cursor=pointer]:
+            - /url: /login
+            - button "Sign In" [ref=f2e11]
+          - link [ref=f2e12] [cursor=pointer]:
+            - /url: /signup
+            - button "Get Started" [ref=f2e13]
+    - main [ref=f2e14]:
+      - generic [ref=f2e15]:
+        - generic [ref=f2e16]:
+          - heading "General Adhkar" [level=1] [ref=f2e17]
+          - paragraph [ref=f2e18]: General supplications and remembrances
+        - generic [ref=f2e19]:
+          - tablist [ref=f2e20]:
+            - tab "List Mode" [selected] [ref=f2e21]
+            - tab "Swipe Mode" [ref=f2e22]
+          - tabpanel "List Mode" [ref=f2e23]:
+            - generic [ref=f2e24]:
+              - generic [ref=f2e27]:
+                - generic [ref=f2e28]:
+                  - generic [ref=f2e29]:
+                    - heading "Asking Allah for Paradise and Refuge from the Fire" [level=3] [ref=f2e30]
+                    - generic [ref=f2e31]: General
+                  - paragraph [ref=f2e32]: يَا ذَا الْجَلَالِ وَالْإِكْرَامِ، يَا حَيُّ يَا قَيُّومُ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَأَعُوذُ بِكَ مِنَ النَّارِ
+                  - paragraph [ref=f2e33]: Ya Dhal-Jalali wal-Ikram, ya Hayyu ya Qayyum inni as'alukal-jannah wa a'udhu bika minan-nar.
+                  - paragraph [ref=f2e34]: O Lord of Majesty and Bounty, O Living, O Sustaining, indeed I ask You for Paradise and I seek refuge in You from the Fire.
+                - generic [ref=f2e35]: 0/1
+              - generic [ref=f2e44]:
+                - generic [ref=f2e45]:
+                  - generic [ref=f2e46]:
+                    - heading "Asking Allah by His Beautiful Names" [level=3] [ref=f2e47]
+                    - generic [ref=f2e48]: General
+                  - paragraph [ref=f2e49]: اللَّهُمَّ إِنِّي أَسْأَلُكَ بِأَنِّي أَشْهَدُ أَنَّكَ أَنْتَ اللهُ لا إلهَ إِلَّا أَنْتَ الْأَحَدُ الصَّمَدُ الَّذِي لَمْ يَلِدْ وَلَمْ يُولَدْ وَلَمْ يَكُنْ لَهُ كُفُواً أَحَدٌ
+                  - paragraph [ref=f2e50]: Allahumma inni as'aluka bi-anni ashhadu annaka Antallahu la ilaha illa Antal-Ahadus-Samadulladhi lam yalid wa lam yulad wa lam yakul-lahu kufuwan ahad.
+                  - paragraph [ref=f2e51]: O Allah, I ask You by the fact that I bear witness that You are Allah. There is no deity except You, the One, the Self-Sufficient Master, who has not begotten, nor has been begotten, and to whom no one is equal.
+                - generic [ref=f2e52]: 0/1
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=f2e64] [cursor=pointer]
+  - alert [ref=f2e68]
