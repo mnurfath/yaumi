@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import type { User } from "@supabase/supabase-js";
@@ -13,12 +13,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Menu, BookOpen, LayoutDashboard, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 
 export function Header() {
-  const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -47,119 +45,45 @@ export function Header() {
     router.push("/login");
   };
 
-  const navLinks = [
-    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/categories", label: "Adhkar", icon: BookOpen },
-  ];
-
-  const isActive = (href: string) => pathname.startsWith(href);
-
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background shadow-sm">
-      <div className="container mx-auto flex h-16 max-w-6xl items-center px-4">
-        <div className="mr-4 flex">
-          <Link href="/" className="group flex items-center gap-2.5">
-            <span className="grid size-8 place-items-center rounded-md bg-primary text-lg font-bold text-primary-foreground transition-transform group-hover:-rotate-3">
-              Y
-            </span>
-            <span className="text-2xl font-bold tracking-tight text-foreground">
-              Yaumi
-            </span>
-          </Link>
-        </div>
+    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur-md">
+      <div className="mx-auto flex h-14 max-w-md items-center justify-between px-4">
+        <Link href="/" className="group flex items-center gap-2.5">
+          <span className="grid size-7 place-items-center rounded-md bg-primary text-base font-bold text-primary-foreground">
+            Y
+          </span>
+          <span className="text-xl font-bold tracking-tight text-foreground">
+            Yaumi
+          </span>
+        </Link>
 
-        {user && (
-          <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`rounded-full px-4 py-2 transition-colors hover:bg-muted ${
-                  isActive(link.href)
-                    ? "bg-muted text-foreground"
-                    : "text-foreground/60"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-        )}
-
-        <div className="flex flex-1 items-center justify-end space-x-2">
+        <div className="flex items-center">
           {loading ? (
             <div className="h-8 w-8 rounded-full bg-muted animate-pulse" />
           ) : user ? (
-            <>
-              <Sheet>
-                <SheetTrigger
-                  render={<Button variant="ghost" size="icon" className="md:hidden" />}
-                >
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle menu</span>
-                </SheetTrigger>
-                <SheetContent side="left">
-                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                  <nav className="flex flex-col space-y-4 mt-6">
-                    {navLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className={`flex items-center space-x-2 text-sm font-medium ${
-                          isActive(link.href)
-                            ? "text-foreground"
-                            : "text-foreground/60"
-                        }`}
-                      >
-                        <link.icon className="h-4 w-4" />
-                        <span>{link.label}</span>
-                      </Link>
-                    ))}
-                    <Button
-                      variant="ghost"
-                      className="justify-start"
-                      onClick={handleSignOut}
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      Sign Out
-                    </Button>
-                  </nav>
-                </SheetContent>
-              </Sheet>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  render={<Button variant="ghost" className="relative h-8 w-8 rounded-full" />}
-                >
-                  <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-primary/10 text-primary">
-                      {user.email?.charAt(0).toUpperCase() || "U"}
-                    </AvatarFallback>
-                  </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end">
-                  <div className="flex items-center justify-start gap-2 p-2">
-                    <div className="flex flex-col space-y-1 leading-none">
-                      <p className="font-medium">{user.email}</p>
-                    </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={<Button variant="ghost" className="relative h-9 w-9 rounded-full p-0" />}
+              >
+                <Avatar className="h-9 w-9">
+                  <AvatarFallback className="bg-primary/10 text-sm text-primary">
+                    {user.email?.charAt(0).toUpperCase() || "U"}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end">
+                <div className="flex items-center justify-start gap-2 p-2">
+                  <div className="flex flex-col space-y-1 leading-none">
+                    <p className="font-medium text-sm">{user.email}</p>
                   </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem render={<Link href="/dashboard" />}>
-                    <LayoutDashboard className="mr-2 h-4 w-4" />
-                    Dashboard
-                  </DropdownMenuItem>
-                  <DropdownMenuItem render={<Link href="/categories" />}>
-                    <BookOpen className="mr-2 h-4 w-4" />
-                    Adhkar
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Sign out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <div className="flex items-center space-x-2">
               <Link

@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AdhkarCounter } from "@/components/adhkar/adhkar-counter";
 import { AdhkarSwiper } from "@/components/adhkar/adhkar-swiper";
-import { BookOpen, Layers } from "lucide-react";
+import { ArrowLeft, BookOpen, Layers } from "lucide-react";
 
 interface AdhkarWithProgress {
   id: string;
@@ -39,12 +40,21 @@ export function CategoryDetailView({
   adhkars,
   isAuthenticated,
 }: CategoryDetailViewProps) {
+  const router = useRouter();
   const [mode, setMode] = useState<"list" | "swipe">("list");
 
   return (
-    <div className="container mx-auto max-w-3xl px-4 py-8 md:py-12">
-      <div className="mb-6 text-center md:text-left">
-        <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-primary">Daily remembrance</p>
+    <div className="mx-auto w-full max-w-md px-4 py-6 md:py-10">
+      <div className="mb-6">
+        <div className="mb-3 flex items-center gap-3">
+          <button
+            onClick={() => router.back()}
+            className="flex size-9 shrink-0 items-center justify-center rounded-full bg-muted transition-all hover:bg-muted/70 hover:text-foreground active:scale-90"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </button>
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Daily remembrance</p>
+        </div>
         <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">{category.name}</h1>
         {category.description && (
           <p className="mt-2 text-base text-muted-foreground">{category.description}</p>
@@ -79,6 +89,7 @@ export function CategoryDetailView({
           <AdhkarSwiper
             adhkars={adhkars}
             isAuthenticated={isAuthenticated}
+            categorySlug={category.slug}
           />
         </TabsContent>
       </Tabs>

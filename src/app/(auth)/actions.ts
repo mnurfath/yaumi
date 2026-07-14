@@ -45,6 +45,19 @@ export async function signup(formData: FormData) {
   redirect("/dashboard");
 }
 
+export async function signInAnonymously() {
+  const supabase = await createClient();
+
+  const { error } = await supabase.auth.signInAnonymously();
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/dashboard");
+}
+
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();

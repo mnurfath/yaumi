@@ -6,11 +6,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { login } from "@/app/(auth)/actions";
+import { login, signInAnonymously } from "@/app/(auth)/actions";
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGuestLoading, setIsGuestLoading] = useState(false);
 
   async function handleSubmit(formData: FormData) {
     setIsLoading(true);
@@ -21,6 +22,18 @@ export default function LoginPage() {
     if (result?.error) {
       setError(result.error);
       setIsLoading(false);
+    }
+  }
+
+  async function handleAnonymous() {
+    setIsGuestLoading(true);
+    setError(null);
+
+    const result = await signInAnonymously();
+
+    if (result?.error) {
+      setError(result.error);
+      setIsGuestLoading(false);
     }
   }
 
@@ -82,6 +95,25 @@ export default function LoginPage() {
             Sign up
           </Link>
         </div>
+
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">Or</span>
+          </div>
+        </div>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="h-11 w-full"
+          disabled={isLoading || isGuestLoading}
+          onClick={handleAnonymous}
+        >
+          {isGuestLoading ? "Signing in..." : "Continue as Guest"}
+        </Button>
       </CardContent>
     </Card>
   );

@@ -25,7 +25,7 @@ export default async function CategoriesPage() {
     .order("display_order");
 
   return (
-    <div className="container mx-auto max-w-5xl px-4 py-8 md:py-12">
+    <div className="mx-auto w-full max-w-md px-4 py-6 md:py-10">
       <div className="mb-8 max-w-2xl">
         <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-primary">Browse the collection</p>
         <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">Adhkar Categories</h1>

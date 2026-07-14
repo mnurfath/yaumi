@@ -128,6 +128,77 @@ export async function markCompleted(adhkarId: string) {
   return { success: true };
 }
 
+export async function resetProgress(adhkarId: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Not authenticated" };
+  }
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const { error } = await supabase
+    .from("user_progress")
+    .delete()
+    .eq("user_id", user.id)
+    .eq("adhkar_id", adhkarId)
+    .eq("date", today);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/categories");
+  return { success: true };
+}
+
+export async function resetCategoryProgress(categorySlug: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Not authenticated" };
+  }
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const { data: category } = await supabase
+    .from("categories")
+    .select("id")
+    .eq("slug", categorySlug)
+    .single();
+
+  if (!category) {
+    return { error: "Category not found" };
+  }
+
+  const { data: adhkars } = await supabase
+    .from("adhkars")
+    .select("id")
+    .eq("category_id", category.id);
+
+  if (!adhkars) {
+    return { error: "No adhkars found" };
+  }
+
+  const adhkarIds = adhkars.map((a) => a.id);
+
+  const { error } = await supabase
+    .from("user_progress")
+    .delete()
+    .eq("user_id", user.id)
+    .eq("date", today)
+    .in("adhkar_id", adhkarIds);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/categories");
+  return { success: true };
+}
+
 export async function getProgressForCategory(categorySlug: string) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();

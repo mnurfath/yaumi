@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, CheckCircle2, Clock } from "lucide-react";
 import Link from "next/link";
 
@@ -35,69 +35,48 @@ export default async function DashboardPage() {
   const totalToday = todayProgress?.length || 0;
 
   return (
-    <div className="container mx-auto max-w-4xl px-4 py-8 md:py-12">
+    <div className="mx-auto w-full max-w-md px-4 py-6 pb-4 md:py-10">
       <div className="mb-8">
         <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-primary">Today&apos;s overview</p>
         <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
-          Assalamu Alaikum, {profile?.display_name || "User"}
+          Assalamu Alaikum, {profile?.display_name || (user.is_anonymous ? "Guest" : "User")}
         </h1>
         <p className="mt-2 text-base text-muted-foreground">
           May your day be filled with blessings
         </p>
       </div>
 
-      <div className="mb-8 grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium">Today&apos;s Progress</CardTitle>
-            <CardAction>
-              <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10">
-                <CheckCircle2 className="h-4 w-4 text-primary" />
-              </div>
-            </CardAction>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-semibold text-foreground">
-              {completedToday} / {totalToday}
+      <div className="mb-8 grid grid-cols-3 gap-2">
+        <Card className="p-3">
+          <div className="flex items-center gap-2">
+            <div className="flex size-7 items-center justify-center rounded-md bg-primary/10">
+              <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
             </div>
-            <p className="text-xs text-muted-foreground">
-              adhkar completed
-            </p>
-          </CardContent>
+            <span className="text-xs font-medium text-muted-foreground">Progress</span>
+          </div>
+          <p className="mt-1.5 text-lg font-semibold text-foreground">
+            {completedToday} / {totalToday}
+          </p>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium">Categories</CardTitle>
-            <CardAction>
-              <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10">
-                <BookOpen className="h-4 w-4 text-primary" />
-              </div>
-            </CardAction>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-semibold text-foreground">{categories?.length || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              available collections
-            </p>
-          </CardContent>
+        <Card className="p-3">
+          <div className="flex items-center gap-2">
+            <div className="flex size-7 items-center justify-center rounded-md bg-primary/10">
+              <BookOpen className="h-3.5 w-3.5 text-primary" />
+            </div>
+            <span className="text-xs font-medium text-muted-foreground">Categories</span>
+          </div>
+          <p className="mt-1.5 text-lg font-semibold text-foreground">{categories?.length || 0}</p>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium">Streak</CardTitle>
-            <CardAction>
-              <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10">
-                <Clock className="h-4 w-4 text-primary" />
-              </div>
-            </CardAction>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-semibold text-foreground">0</div>
-            <p className="text-xs text-muted-foreground">
-              day streak
-            </p>
-          </CardContent>
+        <Card className="p-3">
+          <div className="flex items-center gap-2">
+            <div className="flex size-7 items-center justify-center rounded-md bg-primary/10">
+              <Clock className="h-3.5 w-3.5 text-primary" />
+            </div>
+            <span className="text-xs font-medium text-muted-foreground">Streak</span>
+          </div>
+          <p className="mt-1.5 text-lg font-semibold text-foreground">0</p>
         </Card>
       </div>
 

@@ -4,8 +4,8 @@ import { useState, useTransition } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Plus } from "lucide-react";
-import { incrementProgress } from "@/app/(user)/actions";
+import { CheckCircle2, Plus, RotateCcw } from "lucide-react";
+import { incrementProgress, resetProgress } from "@/app/(user)/actions";
 import { cn } from "@/lib/utils";
 
 interface AdhkarCounterProps {
@@ -29,6 +29,19 @@ export function AdhkarCounter({ adhkar, isAuthenticated }: AdhkarCounterProps) {
   const [count, setCount] = useState(adhkar.progress.completed_count);
   const [isCompleted, setIsCompleted] = useState(adhkar.progress.is_completed);
   const [isPending, startTransition] = useTransition();
+
+  const handleReset = () => {
+    if (!isAuthenticated) return;
+    setCount(0);
+    setIsCompleted(false);
+    startTransition(async () => {
+      const result = await resetProgress(adhkar.id);
+      if (result?.error) {
+        setCount(adhkar.progress.completed_count);
+        setIsCompleted(adhkar.progress.is_completed);
+      }
+    });
+  };
 
   const handleIncrement = () => {
     if (!isAuthenticated || isCompleted) return;
@@ -133,7 +146,14 @@ export function AdhkarCounter({ adhkar, isAuthenticated }: AdhkarCounterProps) {
             )}
 
             {isCompleted && (
-              <Badge className="bg-primary text-primary-foreground border-0">Complete</Badge>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleReset}
+                disabled={isPending}
+              >
+                <RotateCcw className="h-4 w-4" />
+              </Button>
             )}
           </div>
         </div>

@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, CheckCircle2, RotateCcw, X } from "lucide-react";
-import { markCompleted } from "@/app/(user)/actions";
+import { markCompleted, resetCategoryProgress } from "@/app/(user)/actions";
 import { toast } from "sonner";
 
 interface AdhkarItem {
@@ -31,12 +31,13 @@ interface AdhkarItem {
 interface AdhkarSwiperProps {
   adhkars: AdhkarItem[];
   isAuthenticated: boolean;
+  categorySlug?: string;
 }
 
 const SWIPE_THRESHOLD = 100;
 const VELOCITY_THRESHOLD = 500;
 
-export function AdhkarSwiper({ adhkars, isAuthenticated }: AdhkarSwiperProps) {
+export function AdhkarSwiper({ adhkars, isAuthenticated, categorySlug }: AdhkarSwiperProps) {
   const [cards, setCards] = useState<AdhkarItem[]>(
     adhkars.filter((a) => !a.progress.is_completed)
   );
@@ -84,8 +85,19 @@ export function AdhkarSwiper({ adhkars, isAuthenticated }: AdhkarSwiperProps) {
   );
 
   const handleReset = () => {
-    setCards(adhkars.filter((a) => !a.progress.is_completed));
-    setCompletedCards([]);
+    if (isAuthenticated && categorySlug) {
+      resetCategoryProgress(categorySlug).then((result) => {
+        if (result?.error) {
+          toast.error("Could not reset progress. Please try again.");
+          return;
+        }
+        setCards(adhkars);
+        setCompletedCards([]);
+      });
+    } else {
+      setCards(adhkars);
+      setCompletedCards([]);
+    }
   };
 
   if (cards.length === 0) {
