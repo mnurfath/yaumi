@@ -115,7 +115,7 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-4">
           <h2 className="text-xl font-semibold">Adhkars</h2>
           <Select value={filterCategory} onValueChange={(value) => setFilterCategory(value || "all")}>
@@ -135,7 +135,7 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
 
         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
           <DialogTrigger>
-            <Button className="bg-emerald-600 hover:bg-emerald-700">
+            <Button>
               <Plus className="h-4 w-4 mr-2" />
               Add Adhkar
             </Button>
@@ -148,8 +148,8 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
               </DialogDescription>
             </DialogHeader>
             <form action={handleAdd}>
-              <div className="space-y-4 py-4">
-                <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-3 py-3">
+                <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-2">
                     <Label htmlFor="title">Title</Label>
                     <Input id="title" name="title" required />
@@ -192,7 +192,7 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
                   <Textarea id="english_translation" name="english_translation" />
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-3 gap-3">
                   <div className="space-y-2">
                     <Label htmlFor="recitation_context">Context</Label>
                     <Input id="recitation_context" name="recitation_context" placeholder="e.g., After Fajr" />
@@ -208,7 +208,7 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
                 </div>
               </div>
               <DialogFooter>
-                <Button type="submit" disabled={isLoading} className="bg-emerald-600 hover:bg-emerald-700">
+                <Button type="submit" disabled={isLoading}>
                   {isLoading ? "Creating..." : "Create"}
                 </Button>
               </DialogFooter>
@@ -252,7 +252,7 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
                     size="sm"
                     onClick={() => handleDelete(adhkar.id)}
                   >
-                    <Trash2 className="h-4 w-4 text-red-500" />
+                    <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
                 </div>
               </TableCell>
@@ -270,8 +270,8 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
             </DialogDescription>
           </DialogHeader>
           <form action={handleEdit}>
-            <div className="space-y-4 py-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-3 py-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <Label htmlFor="edit-title">Title</Label>
                   <Input
@@ -328,7 +328,7 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
                 />
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-3">
                 <div className="space-y-2">
                   <Label htmlFor="edit-recitation_context">Context</Label>
                   <Input
@@ -359,7 +359,7 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit" disabled={isLoading} className="bg-emerald-600 hover:bg-emerald-700">
+              <Button type="submit" disabled={isLoading}>
                 {isLoading ? "Saving..." : "Save Changes"}
               </Button>
             </DialogFooter>

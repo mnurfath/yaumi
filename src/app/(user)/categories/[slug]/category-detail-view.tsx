@@ -42,22 +42,22 @@ export function CategoryDetailView({
   const [mode, setMode] = useState<"list" | "swipe">("list");
 
   return (
-    <div className="container mx-auto max-w-3xl px-4 py-10 md:py-14">
-      <div className="mb-8 text-center md:text-left">
-        <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">Daily remembrance</p>
-        <h1 className="text-4xl font-semibold tracking-tight text-emerald-950 md:text-5xl">{category.name}</h1>
+    <div className="container mx-auto max-w-3xl px-4 py-8 md:py-12">
+      <div className="mb-6 text-center md:text-left">
+        <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-primary">Daily remembrance</p>
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">{category.name}</h1>
         {category.description && (
           <p className="mt-2 text-base text-muted-foreground">{category.description}</p>
         )}
       </div>
 
       <Tabs value={mode} onValueChange={(v) => setMode(v as "list" | "swipe")}>
-        <TabsList className="mb-8 grid h-11 w-full grid-cols-2 rounded-2xl border border-emerald-950/5 bg-white/60 p-1 shadow-sm backdrop-blur">
-          <TabsTrigger value="list" className="gap-2 rounded-xl data-active:bg-white data-active:text-emerald-900 group-data-[variant=default]/tabs-list:data-active:shadow-none">
+        <TabsList className="mb-6 grid h-9 w-full grid-cols-2">
+          <TabsTrigger value="list" className="gap-2">
             <BookOpen className="h-4 w-4" />
             List Mode
           </TabsTrigger>
-          <TabsTrigger value="swipe" className="gap-2 rounded-xl data-active:bg-white data-active:text-emerald-900 group-data-[variant=default]/tabs-list:data-active:shadow-none">
+          <TabsTrigger value="swipe" className="gap-2">
             <Layers className="h-4 w-4" />
             Swipe Mode
           </TabsTrigger>

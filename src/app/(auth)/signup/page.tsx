@@ -29,9 +29,9 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <Card className="rounded-3xl border-0 bg-white/80 py-8 shadow-[0_20px_60px_rgba(22,78,57,0.08)] ring-1 ring-emerald-950/5 backdrop-blur">
+      <Card className="rounded-xl py-8">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-semibold text-emerald-950">
+          <CardTitle className="text-2xl font-bold tracking-tight text-foreground">
             Check Your Email
           </CardTitle>
           <CardDescription>
@@ -43,7 +43,7 @@ export default function SignupPage() {
             href="/login"
             className={buttonVariants({
               variant: "outline",
-              className: "h-11 w-full rounded-full border-emerald-900/10 bg-white/70 backdrop-blur hover:bg-white",
+              className: "h-11 w-full",
             })}
           >
             Back to Login
@@ -54,9 +54,9 @@ export default function SignupPage() {
   }
 
   return (
-    <Card className="rounded-3xl border-0 bg-white/80 py-8 shadow-[0_20px_60px_rgba(22,78,57,0.08)] ring-1 ring-emerald-950/5 backdrop-blur">
+    <Card className="rounded-xl py-8">
       <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-semibold text-emerald-950">
+        <CardTitle className="text-2xl font-bold tracking-tight text-foreground">
           Join Yaumi
         </CardTitle>
         <CardDescription>
@@ -103,23 +103,23 @@ export default function SignupPage() {
           </div>
 
           {error && (
-            <p className="text-sm text-red-500 dark:text-red-400">{error}</p>
+            <p className="text-sm text-destructive">{error}</p>
           )}
 
           <Button
             type="submit"
-            className="h-11 w-full rounded-full bg-emerald-700 shadow-lg shadow-emerald-900/10 hover:bg-emerald-800"
+            className="h-11 w-full"
             disabled={isLoading}
           >
             {isLoading ? "Creating account..." : "Create Account"}
           </Button>
         </form>
 
-        <div className="mt-4 text-center text-sm">
+        <div className="mt-4 text-center text-sm text-muted-foreground">
           Already have an account?{" "}
           <Link
             href="/login"
-            className="font-medium text-emerald-700 hover:text-emerald-800 dark:text-emerald-400"
+            className="font-medium text-primary hover:text-primary/80"
           >
             Sign in
           </Link>

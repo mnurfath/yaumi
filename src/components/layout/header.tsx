@@ -55,14 +55,14 @@ export function Header() {
   const isActive = (href: string) => pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-emerald-950/5 bg-background/80 shadow-[0_1px_0_rgba(16,78,58,0.03)] backdrop-blur-xl">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background shadow-sm">
       <div className="container mx-auto flex h-16 max-w-6xl items-center px-4">
         <div className="mr-4 flex">
           <Link href="/" className="group flex items-center gap-2.5">
-            <span className="grid size-8 place-items-center rounded-xl bg-emerald-700 font-heading text-lg font-semibold text-white shadow-sm transition-transform group-hover:-rotate-3">
+            <span className="grid size-8 place-items-center rounded-md bg-primary text-lg font-bold text-primary-foreground transition-transform group-hover:-rotate-3">
               Y
             </span>
-            <span className="font-heading text-2xl font-semibold tracking-tight text-emerald-950 dark:text-emerald-100">
+            <span className="text-2xl font-bold tracking-tight text-foreground">
               Yaumi
             </span>
           </Link>
@@ -74,9 +74,9 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-full px-4 py-2 transition-colors hover:bg-emerald-950/5 ${
+                className={`rounded-full px-4 py-2 transition-colors hover:bg-muted ${
                   isActive(link.href)
-                    ? "bg-emerald-950/5 text-emerald-900"
+                    ? "bg-muted text-foreground"
                     : "text-foreground/60"
                 }`}
               >
@@ -132,7 +132,7 @@ export function Header() {
                   render={<Button variant="ghost" className="relative h-8 w-8 rounded-full" />}
                 >
                   <Avatar className="h-8 w-8">
-                    <AvatarFallback className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300">
+                    <AvatarFallback className="bg-primary/10 text-primary">
                       {user.email?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
                   </Avatar>
@@ -170,10 +170,7 @@ export function Header() {
               </Link>
               <Link
                 href="/signup"
-                className={buttonVariants({
-                  size: "sm",
-                  className: "bg-emerald-700 shadow-sm hover:bg-emerald-800",
-                })}
+                className={buttonVariants({ size: "sm" })}
               >
                 Get Started
               </Link>

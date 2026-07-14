@@ -91,7 +91,7 @@ export function AdhkarSwiper({ adhkars, isAuthenticated }: AdhkarSwiperProps) {
   if (cards.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-        <CheckCircle2 className="h-16 w-16 text-emerald-500" />
+        <CheckCircle2 className="h-16 w-16 text-primary" />
         <p className="text-xl font-medium">All caught up!</p>
         <p className="text-muted-foreground">
           {completedCards.length > 0
@@ -110,7 +110,7 @@ export function AdhkarSwiper({ adhkars, isAuthenticated }: AdhkarSwiperProps) {
 
   return (
     <div className="relative flex flex-col items-center gap-6">
-      <p className="rounded-full border border-emerald-900/10 bg-white/65 px-4 py-2 text-center text-xs font-medium text-muted-foreground shadow-sm backdrop-blur">
+      <p className="rounded-full border border-border bg-card px-4 py-2 text-center text-xs font-medium text-muted-foreground">
         Swipe right to complete, left to skip
       </p>
 
@@ -136,8 +136,8 @@ export function AdhkarSwiper({ adhkars, isAuthenticated }: AdhkarSwiperProps) {
 
       <div className="flex items-center gap-3" aria-label="Swipe actions">
         <Button
-          variant="outline"
-          className="rounded-full border-red-200 bg-white px-5 text-red-700 hover:bg-red-50 hover:text-red-800"
+          variant="destructive"
+          className="rounded-full px-5"
           disabled={pendingCardId !== null}
           onClick={() => void handleSwipe(cards[activeIndex], "left")}
         >
@@ -145,7 +145,7 @@ export function AdhkarSwiper({ adhkars, isAuthenticated }: AdhkarSwiperProps) {
           Skip
         </Button>
         <Button
-          className="rounded-full bg-emerald-700 px-5 hover:bg-emerald-800"
+          className="rounded-full px-5"
           disabled={pendingCardId !== null}
           onClick={() => void handleSwipe(cards[activeIndex], "right")}
         >
@@ -154,7 +154,7 @@ export function AdhkarSwiper({ adhkars, isAuthenticated }: AdhkarSwiperProps) {
         </Button>
       </div>
 
-      <p className="rounded-full bg-emerald-950/5 px-3 py-1 text-xs font-semibold text-emerald-900">
+      <p className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-foreground">
         {cards.length} remaining
       </p>
     </div>
@@ -218,7 +218,7 @@ function SwipeableCard({
           opacity: 1,
         }}
       >
-        <div className="h-full rounded-[1.75rem] border border-emerald-950/10 bg-card shadow-[0_18px_50px_rgba(22,78,57,0.1)]" />
+        <div className="h-full rounded-xl border border-border bg-card shadow-sm" />
       </motion.div>
     );
   }
@@ -248,17 +248,16 @@ function SwipeableCard({
         transition: { duration: 0.3 },
       }}
     >
-      <div className="relative h-full overflow-x-hidden overflow-y-auto rounded-[1.75rem] border border-emerald-950/10 bg-card p-6 shadow-[0_22px_60px_rgba(22,78,57,0.14)] sm:p-8">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-emerald-50/70 to-transparent" />
+      <div className="relative h-full overflow-x-hidden overflow-y-auto rounded-xl border border-border bg-card p-6 shadow-md sm:p-8">
         <motion.div
-          className="absolute -top-2 -right-2 z-20 rotate-12 rounded-lg border-4 border-emerald-500 px-4 py-1 text-2xl font-black text-emerald-500"
+          className="absolute -top-2 -right-2 z-20 rotate-12 rounded-lg border-4 border-primary px-4 py-1 text-2xl font-black text-primary"
           style={{ opacity: likeOpacity }}
         >
           DONE
         </motion.div>
 
         <motion.div
-          className="absolute -top-2 -left-2 z-20 -rotate-12 rounded-lg border-4 border-red-500 px-4 py-1 text-2xl font-black text-red-500"
+          className="absolute -top-2 -left-2 z-20 -rotate-12 rounded-lg border-4 border-destructive px-4 py-1 text-2xl font-black text-destructive"
           style={{ opacity: nopeOpacity }}
         >
           SKIP
@@ -276,13 +275,13 @@ function ContentCard({ card }: { card: AdhkarItem }) {
       {card.recitation_context && (
         <Badge
           variant="outline"
-          className="rounded-full border-emerald-900/10 bg-emerald-50/80 px-3 text-emerald-800"
+          className="rounded-full border-border bg-accent/60 px-3 text-accent-foreground"
         >
           {card.recitation_context}
         </Badge>
       )}
 
-      <p className="text-center font-arabic text-2xl leading-[1.9] text-emerald-950" dir="rtl">
+      <p className="text-center font-arabic text-2xl leading-[1.9] text-foreground" dir="rtl">
         {card.arabic_text}
       </p>
 

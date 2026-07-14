@@ -55,10 +55,10 @@ export function AdhkarCounter({ adhkar, isAuthenticated }: AdhkarCounterProps) {
     <Card
       className={cn(
         "transition-all duration-300",
-        isCompleted && "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
+        isCompleted && "border-primary/40 bg-primary/5"
       )}
     >
-      <CardContent className="p-4">
+      <CardContent>
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
@@ -108,15 +108,12 @@ export function AdhkarCounter({ adhkar, isAuthenticated }: AdhkarCounterProps) {
                   strokeWidth="4"
                   strokeDasharray={`${progress * 1.76} 176`}
                   strokeLinecap="round"
-                  className={cn(
-                    "transition-all duration-300",
-                    isCompleted ? "text-emerald-500" : "text-emerald-600"
-                  )}
+                  className="text-primary transition-all duration-300"
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
                 {isCompleted ? (
-                  <CheckCircle2 className="h-8 w-8 text-emerald-500" />
+                  <CheckCircle2 className="h-8 w-8 text-primary" />
                 ) : (
                   <span className="text-sm font-medium">
                     {count}/{adhkar.target_count}
@@ -130,14 +127,13 @@ export function AdhkarCounter({ adhkar, isAuthenticated }: AdhkarCounterProps) {
                 size="sm"
                 onClick={handleIncrement}
                 disabled={isPending}
-                className="bg-emerald-600 hover:bg-emerald-700"
               >
                 <Plus className="h-4 w-4" />
               </Button>
             )}
 
             {isCompleted && (
-              <Badge className="bg-emerald-500">Complete</Badge>
+              <Badge className="bg-primary text-primary-foreground border-0">Complete</Badge>
             )}
           </div>
         </div>

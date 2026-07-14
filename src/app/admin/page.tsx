@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Layers, Users } from "lucide-react";
 
 export default async function AdminDashboardPage() {
@@ -22,9 +22,13 @@ export default async function AdminDashboardPage() {
 
       <div className="grid gap-4 md:grid-cols-3 mb-8">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader>
             <CardTitle className="text-sm font-medium">Categories</CardTitle>
-            <Layers className="h-4 w-4 text-emerald-600" />
+            <CardAction>
+              <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10">
+                <Layers className="h-4 w-4 text-primary" />
+              </div>
+            </CardAction>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{categoriesCount || 0}</div>
@@ -32,9 +36,13 @@ export default async function AdminDashboardPage() {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader>
             <CardTitle className="text-sm font-medium">Adhkars</CardTitle>
-            <BookOpen className="h-4 w-4 text-emerald-600" />
+            <CardAction>
+              <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10">
+                <BookOpen className="h-4 w-4 text-primary" />
+              </div>
+            </CardAction>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{adhkarsCount || 0}</div>
@@ -42,9 +50,13 @@ export default async function AdminDashboardPage() {
         </Card>
 
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardHeader>
             <CardTitle className="text-sm font-medium">Users</CardTitle>
-            <Users className="h-4 w-4 text-emerald-600" />
+            <CardAction>
+              <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10">
+                <Users className="h-4 w-4 text-primary" />
+              </div>
+            </CardAction>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{usersCount || 0}</div>
@@ -54,11 +66,11 @@ export default async function AdminDashboardPage() {
 
       <div className="grid gap-4 md:grid-cols-2">
         <Link href="/admin/categories">
-          <Card className="hover:shadow-md transition-shadow cursor-pointer">
-            <CardContent className="p-6">
+          <Card className="transition-colors hover:border-foreground/20 cursor-pointer">
+            <CardContent>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-lg bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center">
-                  <Layers className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                <div className="w-12 h-12 rounded-lg bg-primary flex items-center justify-center">
+                  <Layers className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
                   <h3 className="font-semibold">Manage Categories</h3>
@@ -72,11 +84,11 @@ export default async function AdminDashboardPage() {
         </Link>
 
         <Link href="/admin/adhkars">
-          <Card className="hover:shadow-md transition-shadow cursor-pointer">
-            <CardContent className="p-6">
+          <Card className="transition-colors hover:border-foreground/20 cursor-pointer">
+            <CardContent>
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-lg bg-emerald-100 dark:bg-emerald-900 flex items-center justify-center">
-                  <BookOpen className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center">
+                  <BookOpen className="h-6 w-6 text-foreground" />
                 </div>
                 <div>
                   <h3 className="font-semibold">Manage Adhkars</h3>

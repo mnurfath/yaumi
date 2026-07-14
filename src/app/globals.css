@@ -50,38 +50,57 @@
 }
 
 :root {
-  --background: oklch(0.985 0.008 92);
-  --foreground: oklch(0.225 0.025 166);
-  --card: oklch(0.998 0.003 92);
-  --card-foreground: oklch(0.225 0.025 166);
-  --popover: oklch(0.998 0.003 92);
-  --popover-foreground: oklch(0.225 0.025 166);
-  --primary: oklch(0.47 0.12 163);
-  --primary-foreground: oklch(0.99 0.005 92);
-  --secondary: oklch(0.95 0.025 155);
-  --secondary-foreground: oklch(0.3 0.06 163);
-  --muted: oklch(0.95 0.012 92);
-  --muted-foreground: oklch(0.5 0.025 166);
-  --accent: oklch(0.93 0.045 151);
-  --accent-foreground: oklch(0.29 0.07 163);
+  /* True neutrals, high contrast - no warm/colorful tint on background or text */
+  --background: oklch(0.995 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  /* Single brand accent: desaturated/darkened emerald (hex ~#006644), reads engineered not pastel */
+  --primary: oklch(0.45 0.1 162);
+  --primary-foreground: oklch(0.99 0 0);
+  /* Secondary/accent are plain neutral grays, not a second or third brand hue */
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.145 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.96 0 0);
+  --accent-foreground: oklch(0.145 0 0);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0.018 145);
-  --input: oklch(0.9 0.018 145);
-  --ring: oklch(0.58 0.11 163);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.875rem;
-  --sidebar: oklch(0.985 0 0);
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.9 0 0);
+  --ring: oklch(0.45 0.1 162);
+  /* Chart palette stays multi-hue - data-viz legitimately uses several colors in this style */
+  --chart-1: oklch(0.55 0.14 163);
+  --chart-2: oklch(0.55 0.15 300);
+  --chart-3: oklch(0.75 0.14 85);
+  --chart-4: oklch(0.6 0.12 200);
+  --chart-5: oklch(0.62 0.18 25);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.995 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --sidebar-primary: oklch(0.45 0.1 162);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.96 0 0);
+  --sidebar-accent-foreground: oklch(0.145 0 0);
+  --sidebar-border: oklch(0.9 0 0);
+  --sidebar-ring: oklch(0.45 0.1 162);
+
+  /* Gradient tokens - not used as a default anywhere in the primitives anymore, but
+     several pages outside this pass still reference bg-gradient-brand/-warm and
+     text-gradient-brand directly, so these stay defined for that opt-in use only. */
+  --gradient-brand: linear-gradient(
+    135deg,
+    oklch(0.52 0.14 163) 0%,
+    oklch(0.58 0.12 200) 45%,
+    oklch(0.55 0.16 300) 100%
+  );
+  --gradient-warm: linear-gradient(
+    135deg,
+    oklch(0.52 0.14 163) 0%,
+    oklch(0.78 0.14 85) 100%
+  );
 }
 
 .dark {
@@ -91,8 +110,8 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  --primary: oklch(0.65 0.12 162);
+  --primary-foreground: oklch(0.145 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
@@ -102,20 +121,50 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --ring: oklch(0.65 0.12 162);
+  --chart-1: oklch(0.7 0.15 163);
+  --chart-2: oklch(0.72 0.16 300);
+  --chart-3: oklch(0.8 0.14 85);
+  --chart-4: oklch(0.72 0.13 200);
+  --chart-5: oklch(0.7 0.19 25);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.65 0.12 162);
+  --sidebar-primary-foreground: oklch(0.145 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-ring: oklch(0.65 0.12 162);
+
+  --gradient-brand: linear-gradient(
+    135deg,
+    oklch(0.72 0.15 163) 0%,
+    oklch(0.68 0.14 200) 45%,
+    oklch(0.72 0.16 300) 100%
+  );
+  --gradient-warm: linear-gradient(
+    135deg,
+    oklch(0.72 0.15 163) 0%,
+    oklch(0.8 0.14 85) 100%
+  );
+}
+
+/* Opt-in gradient utilities - kept only because bg-gradient-brand/-warm and text-gradient-brand
+   are still referenced by pages outside this pass (header, home hero, admin cards, auth titles,
+   adhkar-counter). Not used by default in any shadcn primitive. */
+@utility bg-gradient-brand {
+  background-image: var(--gradient-brand);
+}
+
+@utility bg-gradient-warm {
+  background-image: var(--gradient-warm);
+}
+
+@utility text-gradient-brand {
+  background-image: var(--gradient-brand);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 @layer base {
@@ -124,10 +173,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image:
-      radial-gradient(circle at 10% 0%, oklch(0.93 0.05 151 / 35%), transparent 32rem),
-      radial-gradient(circle at 95% 15%, oklch(0.96 0.04 88 / 55%), transparent 28rem);
-    background-attachment: fixed;
   }
   html {
     @apply font-sans;
@@ -135,9 +180,9 @@
   h1,
   h2,
   h3 {
-    @apply font-heading;
+    @apply font-sans;
   }
   ::selection {
-    background: oklch(0.83 0.09 157 / 55%);
+    background: oklch(0.45 0.1 162 / 25%);
   }
 }

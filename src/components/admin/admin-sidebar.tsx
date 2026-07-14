@@ -28,8 +28,8 @@ export function AdminSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 border-r bg-muted/30 flex flex-col">
-      <div className="p-4 border-b">
+    <aside className="w-64 border-r border-sidebar-border bg-sidebar text-sidebar-foreground flex flex-col">
+      <div className="p-4 border-b border-sidebar-border">
         <Link href="/dashboard">
           <Button variant="ghost" size="sm" className="gap-2">
             <ArrowLeft className="h-4 w-4" />
@@ -48,11 +48,8 @@ export function AdminSidebar() {
             return (
               <Link key={link.href} href={link.href}>
                 <Button
-                  variant={isActive ? "secondary" : "ghost"}
-                  className={cn(
-                    "w-full justify-start gap-2",
-                    isActive && "bg-emerald-100 text-emerald-900 dark:bg-emerald-900 dark:text-emerald-100"
-                  )}
+                  variant={isActive ? "default" : "ghost"}
+                  className={cn("w-full justify-start gap-2")}
                 >
                   <link.icon className="h-4 w-4" />
                   {link.title}

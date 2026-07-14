@@ -7,14 +7,13 @@ export default function HomePage() {
   return (
     <div className="flex min-h-screen flex-col overflow-hidden">
       <section className="relative flex min-h-[62vh] flex-1 items-center justify-center px-4 py-20 md:py-28">
-        <div className="absolute left-1/2 top-8 -z-10 h-72 w-72 -translate-x-1/2 rounded-full bg-emerald-200/30 blur-3xl" />
         <div className="mx-auto max-w-3xl space-y-8 text-center">
           <div className="space-y-5">
-            <div className="mx-auto flex w-fit items-center gap-2 rounded-full border border-emerald-900/10 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-800 shadow-sm backdrop-blur">
+            <div className="mx-auto flex w-fit items-center gap-2 rounded-full border border-border bg-muted px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
               <Sparkles className="size-3.5" />
               A quieter daily rhythm
             </div>
-            <h1 className="text-6xl font-semibold tracking-[-0.04em] text-emerald-950 md:text-8xl">
+            <h1 className="text-6xl font-bold tracking-tight text-foreground md:text-8xl">
               <span>Yaumi</span>
             </h1>
             <p className="mx-auto max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
@@ -27,7 +26,7 @@ export default function HomePage() {
               href="/signup"
               className={buttonVariants({
                 size: "lg",
-                className: "h-11 gap-2 rounded-full bg-emerald-700 px-6 shadow-lg shadow-emerald-900/10 hover:bg-emerald-800",
+                className: "h-11 gap-2 rounded-full px-6",
               })}
             >
               Get Started
@@ -38,7 +37,7 @@ export default function HomePage() {
               className={buttonVariants({
                 size: "lg",
                 variant: "outline",
-                className: "h-11 rounded-full border-emerald-900/10 bg-white/70 px-6 backdrop-blur hover:bg-white",
+                className: "h-11 rounded-full px-6",
               })}
             >
               Browse Adhkar
@@ -47,17 +46,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="border-y border-emerald-950/5 bg-white/45 px-4 py-16 backdrop-blur-sm md:py-20">
+      <section className="border-y border-border bg-muted px-4 py-16 md:py-20">
         <div className="mx-auto max-w-5xl">
-          <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight text-emerald-950 md:text-4xl">
+          <h2 className="mb-12 text-center text-3xl font-bold tracking-tight text-foreground md:text-4xl">
             Everything you need for your spiritual journey
           </h2>
 
           <div className="grid gap-5 md:grid-cols-3">
-            <Card className="border-0 bg-white/75 py-6 shadow-[0_16px_45px_rgba(22,78,57,0.07)] ring-1 ring-emerald-950/5 transition-transform duration-300 hover:-translate-y-1">
+            <Card className="transition-colors hover:border-foreground/20">
               <CardHeader>
-                <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-emerald-100">
-                  <BookOpen className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/10">
+                  <BookOpen className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle>List & Counter</CardTitle>
                 <CardDescription>
@@ -66,10 +65,10 @@ export default function HomePage() {
               </CardHeader>
             </Card>
 
-            <Card className="border-0 bg-white/75 py-6 shadow-[0_16px_45px_rgba(22,78,57,0.07)] ring-1 ring-emerald-950/5 transition-transform duration-300 hover:-translate-y-1">
+            <Card className="transition-colors hover:border-foreground/20">
               <CardHeader>
-                <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-emerald-100">
-                  <Layers className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/10">
+                  <Layers className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle>Swipe Mode</CardTitle>
                 <CardDescription>
@@ -78,10 +77,10 @@ export default function HomePage() {
               </CardHeader>
             </Card>
 
-            <Card className="border-0 bg-white/75 py-6 shadow-[0_16px_45px_rgba(22,78,57,0.07)] ring-1 ring-emerald-950/5 transition-transform duration-300 hover:-translate-y-1">
+            <Card className="transition-colors hover:border-foreground/20">
               <CardHeader>
-                <div className="mb-4 flex size-12 items-center justify-center rounded-2xl bg-emerald-100">
-                  <Smartphone className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                <div className="mb-4 flex size-12 items-center justify-center rounded-lg bg-primary/10">
+                  <Smartphone className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle>Offline PWA</CardTitle>
                 <CardDescription>

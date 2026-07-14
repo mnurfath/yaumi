@@ -91,11 +91,11 @@ export function CategoriesManager({ initialCategories }: CategoriesManagerProps)
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Categories</h2>
         <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
           <DialogTrigger>
-            <Button className="bg-emerald-600 hover:bg-emerald-700">
+            <Button>
               <Plus className="h-4 w-4 mr-2" />
               Add Category
             </Button>
@@ -108,7 +108,7 @@ export function CategoriesManager({ initialCategories }: CategoriesManagerProps)
               </DialogDescription>
             </DialogHeader>
             <form action={handleAdd}>
-              <div className="space-y-4 py-4">
+              <div className="space-y-3 py-3">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name</Label>
                   <Input id="name" name="name" required />
@@ -127,7 +127,7 @@ export function CategoriesManager({ initialCategories }: CategoriesManagerProps)
                 </div>
               </div>
               <DialogFooter>
-                <Button type="submit" disabled={isLoading} className="bg-emerald-600 hover:bg-emerald-700">
+                <Button type="submit" disabled={isLoading}>
                   {isLoading ? "Creating..." : "Create"}
                 </Button>
               </DialogFooter>
@@ -165,7 +165,7 @@ export function CategoriesManager({ initialCategories }: CategoriesManagerProps)
                     size="sm"
                     onClick={() => handleDelete(category.id)}
                   >
-                    <Trash2 className="h-4 w-4 text-red-500" />
+                    <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
                 </div>
               </TableCell>
@@ -183,7 +183,7 @@ export function CategoriesManager({ initialCategories }: CategoriesManagerProps)
             </DialogDescription>
           </DialogHeader>
           <form action={handleEdit}>
-            <div className="space-y-4 py-4">
+            <div className="space-y-3 py-3">
               <div className="space-y-2">
                 <Label htmlFor="edit-name">Name</Label>
                 <Input
@@ -222,7 +222,7 @@ export function CategoriesManager({ initialCategories }: CategoriesManagerProps)
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit" disabled={isLoading} className="bg-emerald-600 hover:bg-emerald-700">
+              <Button type="submit" disabled={isLoading}>
                 {isLoading ? "Saving..." : "Save Changes"}
               </Button>
             </DialogFooter>

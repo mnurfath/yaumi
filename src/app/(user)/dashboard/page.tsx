@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, CheckCircle2, Clock } from "lucide-react";
 import Link from "next/link";
 
@@ -35,10 +35,10 @@ export default async function DashboardPage() {
   const totalToday = todayProgress?.length || 0;
 
   return (
-    <div className="container mx-auto max-w-4xl px-4 py-10 md:py-14">
-      <div className="mb-10">
-        <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-emerald-700">Today&apos;s overview</p>
-        <h1 className="text-4xl font-semibold tracking-tight text-emerald-950 md:text-5xl">
+    <div className="container mx-auto max-w-4xl px-4 py-8 md:py-12">
+      <div className="mb-8">
+        <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-primary">Today&apos;s overview</p>
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
           Assalamu Alaikum, {profile?.display_name || "User"}
         </h1>
         <p className="mt-2 text-base text-muted-foreground">
@@ -46,16 +46,18 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      <div className="mb-10 grid gap-5 md:grid-cols-3">
-        <Card className="border-0 bg-white/75 py-6 shadow-[0_16px_45px_rgba(22,78,57,0.07)] ring-1 ring-emerald-950/5">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <div className="mb-8 grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader>
             <CardTitle className="text-sm font-medium">Today&apos;s Progress</CardTitle>
-            <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-100">
-              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-            </div>
+            <CardAction>
+              <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10">
+                <CheckCircle2 className="h-4 w-4 text-primary" />
+              </div>
+            </CardAction>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-semibold text-emerald-950">
+            <div className="text-2xl font-semibold text-foreground">
               {completedToday} / {totalToday}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -64,30 +66,34 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-0 bg-white/75 py-6 shadow-[0_16px_45px_rgba(22,78,57,0.07)] ring-1 ring-emerald-950/5">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card>
+          <CardHeader>
             <CardTitle className="text-sm font-medium">Categories</CardTitle>
-            <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-100">
-              <BookOpen className="h-4 w-4 text-emerald-600" />
-            </div>
+            <CardAction>
+              <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10">
+                <BookOpen className="h-4 w-4 text-primary" />
+              </div>
+            </CardAction>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-semibold text-emerald-950">{categories?.length || 0}</div>
+            <div className="text-2xl font-semibold text-foreground">{categories?.length || 0}</div>
             <p className="text-xs text-muted-foreground">
               available collections
             </p>
           </CardContent>
         </Card>
 
-        <Card className="border-0 bg-white/75 py-6 shadow-[0_16px_45px_rgba(22,78,57,0.07)] ring-1 ring-emerald-950/5">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card>
+          <CardHeader>
             <CardTitle className="text-sm font-medium">Streak</CardTitle>
-            <div className="flex size-9 items-center justify-center rounded-xl bg-emerald-100">
-              <Clock className="h-4 w-4 text-emerald-600" />
-            </div>
+            <CardAction>
+              <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10">
+                <Clock className="h-4 w-4 text-primary" />
+              </div>
+            </CardAction>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-semibold text-emerald-950">0</div>
+            <div className="text-2xl font-semibold text-foreground">0</div>
             <p className="text-xs text-muted-foreground">
               day streak
             </p>
@@ -95,21 +101,21 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      <div className="space-y-5">
-        <h2 className="text-xl font-semibold text-emerald-950">Quick Access</h2>
-        <div className="grid gap-5 md:grid-cols-2">
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold text-foreground">Quick Access</h2>
+        <div className="grid gap-4 md:grid-cols-2">
           {categories?.map((category) => (
             <Link key={category.id} href={`/categories/${category.slug}`}>
-              <Card className="group h-full cursor-pointer border-0 bg-white/75 py-6 shadow-[0_10px_35px_rgba(22,78,57,0.05)] ring-1 ring-emerald-950/5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(22,78,57,0.1)]">
-                <CardContent className="p-4">
+              <Card className="group h-full cursor-pointer transition-colors hover:border-primary/40">
+                <CardContent>
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-medium text-emerald-950">{category.name}</h3>
+                      <h3 className="font-medium text-foreground">{category.name}</h3>
                       <p className="text-sm text-muted-foreground">
                         View adhkar
                       </p>
                     </div>
-                    <span className="text-sm font-medium text-emerald-700 transition-colors group-hover:text-emerald-800">
+                    <span className="text-sm font-medium text-primary transition-colors group-hover:text-primary/80">
                       Open
                     </span>
                   </div>
