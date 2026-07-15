@@ -40,6 +40,7 @@ export interface Database {
           name: string;
           slug: string;
           description: string | null;
+          icon: string | null;
           display_order: number;
           created_at: string;
           updated_at: string;
@@ -49,6 +50,7 @@ export interface Database {
           name: string;
           slug: string;
           description?: string | null;
+          icon?: string | null;
           display_order?: number;
           created_at?: string;
           updated_at?: string;
@@ -58,6 +60,7 @@ export interface Database {
           name?: string;
           slug?: string;
           description?: string | null;
+          icon?: string | null;
           display_order?: number;
           created_at?: string;
           updated_at?: string;

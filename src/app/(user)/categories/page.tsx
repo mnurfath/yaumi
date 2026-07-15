@@ -2,7 +2,8 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowUpRight, BookOpen } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { CategoryIcon } from "@/components/category-icon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export default async function CategoriesPage() {
       name,
       slug,
       description,
+      icon,
       adhkars (id)
     `)
     .order("display_order");
@@ -41,7 +43,7 @@ export default async function CategoriesPage() {
               <CardHeader className="gap-2">
                 <div className="flex items-start justify-between">
                   <div className="flex size-11 items-center justify-center rounded-lg bg-primary/10 transition-colors group-hover:bg-primary/20">
-                    <BookOpen className="h-5 w-5 text-primary" />
+                    <CategoryIcon name={category.icon} className="h-5 w-5 text-primary" />
                   </div>
                   <div className="flex items-center gap-2">
                     <Badge variant="secondary" className="rounded-full px-3">{category.adhkars?.length || 0} adhkar</Badge>

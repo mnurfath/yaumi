@@ -25,17 +25,113 @@ import {
 } from "@/components/ui/table";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import {
+  CATEGORY_ICONS,
+  CATEGORY_ICON_NAMES,
+  CategoryIcon,
+  type CategoryIconName,
+} from "@/components/category-icon";
+import { cn } from "@/lib/utils";
 
 interface Category {
   id: string;
   name: string;
   slug: string;
   description: string | null;
+  icon: string | null;
   display_order: number;
 }
 
 interface CategoriesManagerProps {
   initialCategories: Category[];
+}
+
+function IconPicker({
+  value,
+  onChange,
+}: {
+  value: string | null;
+  onChange: (name: string | null) => void;
+}) {
+  return (
+    <div className="grid grid-cols-6 gap-2 sm:grid-cols-8">
+      {CATEGORY_ICON_NAMES.map((name) => {
+        const Icon = CATEGORY_ICONS[name as CategoryIconName];
+        const selected = value === name;
+        return (
+          <button
+            key={name}
+            type="button"
+            aria-label={name}
+            aria-pressed={selected}
+            onClick={() => onChange(selected ? null : name)}
+            className={cn(
+              "flex size-10 items-center justify-center rounded-lg border transition-colors",
+              selected
+                ? "border-primary bg-primary/10 text-primary"
+                : "border-input bg-background hover:bg-muted"
+            )}
+          >
+            <Icon className="h-5 w-5" />
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function CategoryFormFields({
+  category,
+}: {
+  category?: Pick<Category, "name" | "slug" | "description" | "icon" | "display_order"> | null;
+}) {
+  const [icon, setIcon] = useState<string | null>(category?.icon ?? null);
+
+  return (
+    <>
+      <div className="space-y-2">
+        <Label htmlFor={category ? "edit-name" : "name"}>Name</Label>
+        <Input
+          id={category ? "edit-name" : "name"}
+          name="name"
+          defaultValue={category?.name}
+          required
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor={category ? "edit-slug" : "slug"}>Slug</Label>
+        <Input
+          id={category ? "edit-slug" : "slug"}
+          name="slug"
+          defaultValue={category?.slug}
+          required
+          pattern="[a-z0-9-]+"
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor={category ? "edit-description" : "description"}>Description</Label>
+        <Textarea
+          id={category ? "edit-description" : "description"}
+          name="description"
+          defaultValue={category?.description || ""}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label>Icon</Label>
+        <IconPicker value={icon} onChange={setIcon} />
+        <input type="hidden" name="icon" value={icon ?? ""} />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor={category ? "edit-display_order" : "display_order"}>Display Order</Label>
+        <Input
+          id={category ? "edit-display_order" : "display_order"}
+          name="display_order"
+          type="number"
+          defaultValue={category?.display_order ?? 0}
+        />
+      </div>
+    </>
+  );
 }
 
 export function CategoriesManager({ initialCategories }: CategoriesManagerProps) {
@@ -109,22 +205,7 @@ export function CategoriesManager({ initialCategories }: CategoriesManagerProps)
             </DialogHeader>
             <form action={handleAdd}>
               <div className="space-y-3 py-3">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" name="name" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="slug">Slug</Label>
-                  <Input id="slug" name="slug" required pattern="[a-z0-9-]+" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea id="description" name="description" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="display_order">Display Order</Label>
-                  <Input id="display_order" name="display_order" type="number" defaultValue="0" />
-                </div>
+                <CategoryFormFields />
               </div>
               <DialogFooter>
                 <Button type="submit" disabled={isLoading}>
@@ -139,6 +220,7 @@ export function CategoriesManager({ initialCategories }: CategoriesManagerProps)
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead className="w-[60px]">Icon</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Slug</TableHead>
             <TableHead>Order</TableHead>
@@ -148,6 +230,11 @@ export function CategoriesManager({ initialCategories }: CategoriesManagerProps)
         <TableBody>
           {categories.map((category) => (
             <TableRow key={category.id}>
+              <TableCell>
+                <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10">
+                  <CategoryIcon name={category.icon} className="h-4 w-4 text-primary" />
+                </div>
+              </TableCell>
               <TableCell className="font-medium">{category.name}</TableCell>
               <TableCell className="text-muted-foreground">{category.slug}</TableCell>
               <TableCell>{category.display_order}</TableCell>
@@ -184,42 +271,7 @@ export function CategoriesManager({ initialCategories }: CategoriesManagerProps)
           </DialogHeader>
           <form action={handleEdit}>
             <div className="space-y-3 py-3">
-              <div className="space-y-2">
-                <Label htmlFor="edit-name">Name</Label>
-                <Input
-                  id="edit-name"
-                  name="name"
-                  defaultValue={editingCategory?.name}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="edit-slug">Slug</Label>
-                <Input
-                  id="edit-slug"
-                  name="slug"
-                  defaultValue={editingCategory?.slug}
-                  required
-                  pattern="[a-z0-9-]+"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="edit-description">Description</Label>
-                <Textarea
-                  id="edit-description"
-                  name="description"
-                  defaultValue={editingCategory?.description || ""}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="edit-display_order">Display Order</Label>
-                <Input
-                  id="edit-display_order"
-                  name="display_order"
-                  type="number"
-                  defaultValue={editingCategory?.display_order}
-                />
-              </div>
+              <CategoryFormFields category={editingCategory} />
             </div>
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>

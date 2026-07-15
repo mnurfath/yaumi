@@ -8,6 +8,7 @@ const categorySchema = z.object({
   name: z.string().min(1, "Name is required"),
   slug: z.string().min(1, "Slug is required").regex(/^[a-z0-9-]+$/, "Slug must be lowercase with hyphens"),
   description: z.string().optional(),
+  icon: z.string().nullable().optional(),
   display_order: z.number().int().min(0).default(0),
 });
 
@@ -51,6 +52,7 @@ export async function createCategory(formData: FormData) {
       name: formData.get("name") as string,
       slug: formData.get("slug") as string,
       description: formData.get("description") as string || undefined,
+      icon: (formData.get("icon") as string) || null,
       display_order: parseInt(formData.get("display_order") as string) || 0,
     };
 
@@ -82,6 +84,7 @@ export async function updateCategory(id: string, formData: FormData) {
       name: formData.get("name") as string,
       slug: formData.get("slug") as string,
       description: formData.get("description") as string || undefined,
+      icon: (formData.get("icon") as string) || null,
       display_order: parseInt(formData.get("display_order") as string) || 0,
     };
 

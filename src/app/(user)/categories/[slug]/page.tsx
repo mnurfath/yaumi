@@ -38,6 +38,7 @@ export default async function CategoryPage({ params }: Props) {
       name,
       slug,
       description,
+      icon,
       adhkars (
         id,
         title,
@@ -101,6 +102,7 @@ export default async function CategoryPage({ params }: Props) {
         name: category.name,
         slug: category.slug,
         description: category.description,
+        icon: category.icon,
       }}
       adhkars={adhkarsWithProgress}
       isAuthenticated={!!user}
