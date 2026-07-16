@@ -7,6 +7,8 @@ export type Json =
   | Json[];
 
 export type AppRole = "admin" | "user";
+export type TimingType = "SPECIFIC_SALAH" | "SPECIFIC_IBADAH" | "GENERAL";
+export type SalahEventType = "WAJIB" | "SUNNAH" | "IBADAH";
 
 export interface Database {
   public: {
@@ -75,6 +77,7 @@ export interface Database {
           latin_transliteration: string | null;
           english_translation: string | null;
           recitation_context: string | null;
+          timing_type: TimingType | null;
           target_count: number;
           display_order: number;
           created_at: string;
@@ -88,6 +91,7 @@ export interface Database {
           latin_transliteration?: string | null;
           english_translation?: string | null;
           recitation_context?: string | null;
+          timing_type?: TimingType | null;
           target_count?: number;
           display_order?: number;
           created_at?: string;
@@ -101,10 +105,54 @@ export interface Database {
           latin_transliteration?: string | null;
           english_translation?: string | null;
           recitation_context?: string | null;
+          timing_type?: TimingType | null;
           target_count?: number;
           display_order?: number;
           created_at?: string;
           updated_at?: string;
+        };
+      };
+      salah_events: {
+        Row: {
+          id: string;
+          name: string;
+          slug: string;
+          event_type: SalahEventType;
+          display_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          slug: string;
+          event_type: SalahEventType;
+          display_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          slug?: string;
+          event_type?: SalahEventType;
+          display_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      adhkar_salah_events: {
+        Row: {
+          adhkar_id: string;
+          salah_event_id: string;
+        };
+        Insert: {
+          adhkar_id: string;
+          salah_event_id: string;
+        };
+        Update: {
+          adhkar_id?: string;
+          salah_event_id?: string;
         };
       };
       user_progress: {
@@ -142,6 +190,8 @@ export interface Database {
     };
     Enums: {
       app_role: AppRole;
+      timing_type: TimingType;
+      salah_event_type: SalahEventType;
     };
   };
 }
@@ -153,6 +203,8 @@ export type Tables<T extends keyof Database["public"]["Tables"]> =
 export type Profile = Tables<"profiles">;
 export type Category = Tables<"categories">;
 export type Adhkar = Tables<"adhkars">;
+export type SalahEvent = Tables<"salah_events">;
+export type AdhkarSalahEvent = Tables<"adhkar_salah_events">;
 export type UserProgress = Tables<"user_progress">;
 
 // Joined types for common queries
@@ -165,5 +217,13 @@ export type AdhkarWithProgress = Adhkar & {
 };
 
 export type CategoryWithAdhkars = Category & {
+  adhkars: Adhkar[];
+};
+
+export type AdhkarWithSalahEvents = Adhkar & {
+  salah_events: SalahEvent[];
+};
+
+export type SalahEventWithAdhkars = SalahEvent & {
   adhkars: Adhkar[];
 };

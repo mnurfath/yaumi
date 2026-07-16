@@ -332,3 +332,133 @@ begin
       2
     );
 end $$;
+
+-- =============================================
+-- SALAH EVENTS
+-- =============================================
+insert into public.salah_events (name, slug, event_type, display_order) values
+  ('Fajr', 'fajr', 'WAJIB', 1),
+  ('Dhuhr', 'dhuhr', 'WAJIB', 2),
+  ('Asr', 'asr', 'WAJIB', 3),
+  ('Maghrib', 'maghrib', 'WAJIB', 4),
+  ('Isha', 'isha', 'WAJIB', 5),
+  ('Dhuha', 'dhuha', 'SUNNAH', 6),
+  ('Witr', 'witr', 'SUNNAH', 7),
+  ('Tahajjud', 'tahajjud', 'SUNNAH', 8),
+  ('Going to Mosque', 'going-to-mosque', 'IBADAH', 9),
+  ('Entering Mosque', 'entering-mosque', 'IBADAH', 10),
+  ('Leaving Mosque', 'leaving-mosque', 'IBADAH', 11),
+  ('Wudu', 'wudu', 'IBADAH', 12),
+  ('Adhan', 'adhan', 'IBADAH', 13)
+on conflict (slug) do nothing;
+
+-- =============================================
+-- UPDATE ADHKAR TIMING TYPES
+-- =============================================
+update public.adhkars set timing_type = 'GENERAL'
+where category_id in (select id from categories where slug in ('general-adhkar', 'istikhara'));
+
+update public.adhkars set timing_type = 'SPECIFIC_SALAH'
+where category_id in (select id from categories where slug in ('after-obligatory-prayers', 'after-voluntary-prayers'));
+
+update public.adhkars set timing_type = 'SPECIFIC_IBADAH'
+where category_id in (select id from categories where slug in ('mosque', 'wudu', 'adhan'));
+
+-- =============================================
+-- ADHKAR <-> SALAH EVENT MAPPINGS
+-- =============================================
+do $$
+declare
+  fajr_id         uuid;
+  dhuhr_id        uuid;
+  asr_id          uuid;
+  maghrib_id      uuid;
+  isha_id         uuid;
+  dhuha_id        uuid;
+  witr_id         uuid;
+  going_id        uuid;
+  entering_id     uuid;
+  leaving_id      uuid;
+  wudu_id         uuid;
+  adhan_id        uuid;
+begin
+  select id into fajr_id     from salah_events where slug = 'fajr';
+  select id into dhuhr_id    from salah_events where slug = 'dhuhr';
+  select id into asr_id      from salah_events where slug = 'asr';
+  select id into maghrib_id  from salah_events where slug = 'maghrib';
+  select id into isha_id     from salah_events where slug = 'isha';
+  select id into dhuha_id    from salah_events where slug = 'dhuha';
+  select id into witr_id     from salah_events where slug = 'witr';
+  select id into going_id    from salah_events where slug = 'going-to-mosque';
+  select id into entering_id from salah_events where slug = 'entering-mosque';
+  select id into leaving_id  from salah_events where slug = 'leaving-mosque';
+  select id into wudu_id     from salah_events where slug = 'wudu';
+  select id into adhan_id    from salah_events where slug = 'adhan';
+
+  -- After Obligatory Prayers -> all 5 wajib prayers
+  insert into public.adhkar_salah_events (adhkar_id, salah_event_id)
+    select a.id, se.id
+    from public.adhkars a
+    cross join (values (fajr_id), (dhuhr_id), (asr_id), (maghrib_id), (isha_id)) as se(id)
+    where a.category_id = (select id from categories where slug = 'after-obligatory-prayers')
+    on conflict do nothing;
+
+  -- Remove incorrect mappings for Fajr/Maghrib-specific adhkar
+  delete from public.adhkar_salah_events
+    where adhkar_id = (select id from adhkars where title = 'La ilaha illallahu wahdahu (10 times after Fajr and Maghrib)')
+    and salah_event_id in (dhuhr_id, asr_id, isha_id);
+
+  -- Remove incorrect mappings for Fajr-specific adhkar
+  delete from public.adhkar_salah_events
+    where adhkar_id = (select id from adhkars where title = 'Dua After Fajr for Knowledge, Provision, and Acceptable Deeds')
+    and salah_event_id in (dhuhr_id, asr_id, maghrib_id, isha_id);
+
+  -- After Voluntary Prayers: Subhanal-Malikil-Quddus -> Witr
+  insert into public.adhkar_salah_events (adhkar_id, salah_event_id)
+    select a.id, witr_id
+    from public.adhkars a
+    where a.title = 'Subhanal-Malikil-Quddus (After Witr)'
+    on conflict do nothing;
+
+  -- After Voluntary Prayers: Dua After Duha -> Dhuha
+  insert into public.adhkar_salah_events (adhkar_id, salah_event_id)
+    select a.id, dhuha_id
+    from public.adhkars a
+    where a.title = 'Dua After Duha Prayer'
+    on conflict do nothing;
+
+  -- Mosque: Going -> going-to-mosque
+  insert into public.adhkar_salah_events (adhkar_id, salah_event_id)
+    select a.id, going_id
+    from public.adhkars a
+    where a.title = 'Dua When Going to the Mosque'
+    on conflict do nothing;
+
+  -- Mosque: Entering -> entering-mosque
+  insert into public.adhkar_salah_events (adhkar_id, salah_event_id)
+    select a.id, entering_id
+    from public.adhkars a
+    where a.title like 'Dua When Entering the Mosque%'
+    on conflict do nothing;
+
+  -- Mosque: Leaving -> leaving-mosque
+  insert into public.adhkar_salah_events (adhkar_id, salah_event_id)
+    select a.id, leaving_id
+    from public.adhkars a
+    where a.title = 'Dua When Leaving the Mosque'
+    on conflict do nothing;
+
+  -- Wudu -> wudu event
+  insert into public.adhkar_salah_events (adhkar_id, salah_event_id)
+    select a.id, wudu_id
+    from public.adhkars a
+    where a.category_id = (select id from categories where slug = 'wudu')
+    on conflict do nothing;
+
+  -- Adhan -> adhan event
+  insert into public.adhkar_salah_events (adhkar_id, salah_event_id)
+    select a.id, adhan_id
+    from public.adhkars a
+    where a.category_id = (select id from categories where slug = 'adhan')
+    on conflict do nothing;
+end $$;

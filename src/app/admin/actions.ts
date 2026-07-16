@@ -19,6 +19,7 @@ const adhkarSchema = z.object({
   latin_transliteration: z.string().optional(),
   english_translation: z.string().optional(),
   recitation_context: z.string().optional(),
+  timing_type: z.enum(["SPECIFIC_SALAH", "SPECIFIC_IBADAH", "GENERAL"]).default("GENERAL"),
   target_count: z.number().int().min(1, "Target count must be at least 1").default(1),
   display_order: z.number().int().min(0).default(0),
 });
@@ -140,18 +141,38 @@ export async function createAdhkar(formData: FormData) {
       latin_transliteration: formData.get("latin_transliteration") as string || undefined,
       english_translation: formData.get("english_translation") as string || undefined,
       recitation_context: formData.get("recitation_context") as string || undefined,
+      timing_type: formData.get("timing_type") as "SPECIFIC_SALAH" | "SPECIFIC_IBADAH" | "GENERAL" || "GENERAL",
       target_count: parseInt(formData.get("target_count") as string) || 1,
       display_order: parseInt(formData.get("display_order") as string) || 0,
     };
 
     const validated = adhkarSchema.parse(data);
 
-    const { error } = await supabase
+    const salahEventIds = formData.getAll("salah_event_ids") as string[];
+
+    const { data: adhkar, error } = await supabase
       .from("adhkars")
-      .insert(validated);
+      .insert(validated)
+      .select("id")
+      .single();
 
     if (error) {
       return { error: error.message };
+    }
+
+    if (adhkar && salahEventIds.length > 0) {
+      const { error: junctionError } = await supabase
+        .from("adhkar_salah_events")
+        .insert(
+          salahEventIds.map((eventId) => ({
+            adhkar_id: adhkar.id,
+            salah_event_id: eventId,
+          }))
+        );
+
+      if (junctionError) {
+        return { error: junctionError.message };
+      }
     }
 
     revalidatePath("/admin/adhkars");
@@ -175,11 +196,14 @@ export async function updateAdhkar(id: string, formData: FormData) {
       latin_transliteration: formData.get("latin_transliteration") as string || undefined,
       english_translation: formData.get("english_translation") as string || undefined,
       recitation_context: formData.get("recitation_context") as string || undefined,
+      timing_type: formData.get("timing_type") as "SPECIFIC_SALAH" | "SPECIFIC_IBADAH" | "GENERAL" || "GENERAL",
       target_count: parseInt(formData.get("target_count") as string) || 1,
       display_order: parseInt(formData.get("display_order") as string) || 0,
     };
 
     const validated = adhkarSchema.parse(data);
+
+    const salahEventIds = formData.getAll("salah_event_ids") as string[];
 
     const { error } = await supabase
       .from("adhkars")
@@ -188,6 +212,31 @@ export async function updateAdhkar(id: string, formData: FormData) {
 
     if (error) {
       return { error: error.message };
+    }
+
+    // Replace salah event associations
+    const { error: deleteError } = await supabase
+      .from("adhkar_salah_events")
+      .delete()
+      .eq("adhkar_id", id);
+
+    if (deleteError) {
+      return { error: deleteError.message };
+    }
+
+    if (salahEventIds.length > 0) {
+      const { error: junctionError } = await supabase
+        .from("adhkar_salah_events")
+        .insert(
+          salahEventIds.map((eventId) => ({
+            adhkar_id: id,
+            salah_event_id: eventId,
+          }))
+        );
+
+      if (junctionError) {
+        return { error: junctionError.message };
+      }
     }
 
     revalidatePath("/admin/adhkars");

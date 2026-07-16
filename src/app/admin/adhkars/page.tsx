@@ -4,14 +4,18 @@ import { AdhkarsManager } from "@/components/admin/adhkars-manager";
 export default async function AdminAdhkarsPage() {
   const supabase = await createClient();
 
-  const [{ data: adhkars }, { data: categories }] = await Promise.all([
+  const [{ data: adhkars }, { data: categories }, { data: salahEvents }] = await Promise.all([
     supabase
       .from("adhkars")
-      .select("*, categories(name)")
+      .select("*, categories(name), adhkar_salah_events(salah_events(id, name))")
       .order("display_order"),
     supabase
       .from("categories")
       .select("id, name")
+      .order("display_order"),
+    supabase
+      .from("salah_events")
+      .select("id, name, slug, event_type")
       .order("display_order"),
   ]);
 
@@ -21,6 +25,7 @@ export default async function AdminAdhkarsPage() {
       <AdhkarsManager
         initialAdhkars={adhkars || []}
         categories={categories || []}
+        salahEvents={salahEvents || []}
       />
     </div>
   );

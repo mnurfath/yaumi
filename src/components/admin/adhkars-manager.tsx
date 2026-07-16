@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createAdhkar, updateAdhkar, deleteAdhkar } from "@/app/admin/actions";
+import type { TimingType } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -39,6 +40,13 @@ interface Category {
   name: string;
 }
 
+interface SalahEvent {
+  id: string;
+  name: string;
+  slug: string;
+  event_type: string;
+}
+
 interface Adhkar {
   id: string;
   title: string;
@@ -47,22 +55,33 @@ interface Adhkar {
   latin_transliteration: string | null;
   english_translation: string | null;
   recitation_context: string | null;
+  timing_type: TimingType | null;
   target_count: number;
   display_order: number;
   categories: { name: string } | null;
+  adhkar_salah_events: { salah_events: { id: string; name: string } }[] | null;
 }
 
 interface AdhkarsManagerProps {
   initialAdhkars: Adhkar[];
   categories: Category[];
+  salahEvents: SalahEvent[];
 }
 
-export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerProps) {
+const TIMING_TYPE_LABELS: Record<TimingType, string> = {
+  SPECIFIC_SALAH: "Specific Salah",
+  SPECIFIC_IBADAH: "Specific Ibadah",
+  GENERAL: "General",
+};
+
+export function AdhkarsManager({ initialAdhkars, categories, salahEvents }: AdhkarsManagerProps) {
   const [adhkars, setAdhkars] = useState(initialAdhkars);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [editingAdhkar, setEditingAdhkar] = useState<Adhkar | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [filterCategory, setFilterCategory] = useState<string>("all");
+  const [addTimingType, setAddTimingType] = useState<TimingType>("GENERAL");
+  const [editTimingType, setEditTimingType] = useState<TimingType>("GENERAL");
 
   const filteredAdhkars = filterCategory === "all"
     ? adhkars
@@ -206,6 +225,37 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
                     <Input id="display_order" name="display_order" type="number" defaultValue="0" />
                   </div>
                 </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="timing_type">Timing Type</Label>
+                  <Select name="timing_type" value={addTimingType} onValueChange={(v) => setAddTimingType(v as TimingType)}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="GENERAL">General</SelectItem>
+                      <SelectItem value="SPECIFIC_SALAH">Specific Salah</SelectItem>
+                      <SelectItem value="SPECIFIC_IBADAH">Specific Ibadah</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {addTimingType === "SPECIFIC_SALAH" && (
+                  <div className="space-y-2">
+                    <Label>Associated Salah Events</Label>
+                    <div className="flex flex-wrap gap-3 rounded-md border p-3">
+                      {salahEvents.map((event) => (
+                        <label key={event.id} className="flex items-center gap-2 text-sm">
+                          <input type="checkbox" name="salah_event_ids" value={event.id} className="h-4 w-4" />
+                          {event.name}
+                        </label>
+                      ))}
+                      {salahEvents.length === 0 && (
+                        <p className="text-sm text-muted-foreground">No salah events configured.</p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
               <DialogFooter>
                 <Button type="submit" disabled={isLoading}>
@@ -223,6 +273,7 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
             <TableHead>Title</TableHead>
             <TableHead>Category</TableHead>
             <TableHead>Arabic Preview</TableHead>
+            <TableHead>Timing</TableHead>
             <TableHead>Target</TableHead>
             <TableHead className="w-[100px]">Actions</TableHead>
           </TableRow>
@@ -237,13 +288,34 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
               <TableCell className="max-w-[200px] truncate" dir="rtl">
                 {adhkar.arabic_text}
               </TableCell>
+              <TableCell>
+                <div className="flex flex-col gap-1">
+                  <Badge variant="secondary">
+                    {TIMING_TYPE_LABELS[adhkar.timing_type || "GENERAL"]}
+                  </Badge>
+                  {adhkar.timing_type === "SPECIFIC_SALAH" &&
+                    adhkar.adhkar_salah_events &&
+                    adhkar.adhkar_salah_events.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        {adhkar.adhkar_salah_events.map((ase) => (
+                          <Badge key={ase.salah_events.id} variant="outline" className="text-xs">
+                            {ase.salah_events.name}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                </div>
+              </TableCell>
               <TableCell>{adhkar.target_count}</TableCell>
               <TableCell>
                 <div className="flex gap-2">
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setEditingAdhkar(adhkar)}
+                    onClick={() => {
+                      setEditingAdhkar(adhkar);
+                      setEditTimingType(adhkar.timing_type || "GENERAL");
+                    }}
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
@@ -357,6 +429,48 @@ export function AdhkarsManager({ initialAdhkars, categories }: AdhkarsManagerPro
                   />
                 </div>
               </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="edit-timing_type">Timing Type</Label>
+                <Select name="timing_type" value={editTimingType} onValueChange={(v) => setEditTimingType(v as TimingType)}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="GENERAL">General</SelectItem>
+                    <SelectItem value="SPECIFIC_SALAH">Specific Salah</SelectItem>
+                    <SelectItem value="SPECIFIC_IBADAH">Specific Ibadah</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {editTimingType === "SPECIFIC_SALAH" && (
+                <div className="space-y-2">
+                  <Label>Associated Salah Events</Label>
+                  <div className="flex flex-wrap gap-3 rounded-md border p-3">
+                    {salahEvents.map((event) => {
+                      const isSelected = editingAdhkar?.adhkar_salah_events?.some(
+                        (ase) => ase.salah_events.id === event.id
+                      );
+                      return (
+                        <label key={event.id} className="flex items-center gap-2 text-sm">
+                          <input
+                            type="checkbox"
+                            name="salah_event_ids"
+                            value={event.id}
+                            defaultChecked={isSelected}
+                            className="h-4 w-4"
+                          />
+                          {event.name}
+                        </label>
+                      );
+                    })}
+                    {salahEvents.length === 0 && (
+                      <p className="text-sm text-muted-foreground">No salah events configured.</p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
             <DialogFooter>
               <Button type="submit" disabled={isLoading}>
