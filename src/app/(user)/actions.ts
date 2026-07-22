@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { getRecommendedAdhkars } from "@/lib/supabase/queries";
 
 export async function incrementProgress(adhkarId: string) {
   const supabase = await createClient();
@@ -238,4 +239,8 @@ export async function getProgressForCategory(categorySlug: string) {
     .in("adhkar_id", adhkarIds);
 
   return progress || [];
+}
+
+export async function getRecommendedAdhkarsAction(eventSlug: string) {
+  return getRecommendedAdhkars(eventSlug);
 }

@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, CheckCircle2, Clock } from "lucide-react";
 import Link from "next/link";
+import { PrayerTimesWidget } from "@/components/prayer-times-widget";
+import { RecommendedAdhkarWidget } from "@/components/recommended-adhkar-widget";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -44,6 +46,14 @@ export default async function DashboardPage() {
         <p className="mt-2 text-base text-muted-foreground">
           May your day be filled with blessings
         </p>
+      </div>
+
+      <div className="mb-8">
+        <PrayerTimesWidget />
+      </div>
+
+      <div className="mb-8">
+        <RecommendedAdhkarWidget />
       </div>
 
       <div className="mb-8 grid grid-cols-3 gap-2">
