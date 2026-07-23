@@ -33,8 +33,12 @@ export default async function DashboardPage() {
     .eq("user_id", user.id)
     .eq("date", today);
 
+  const { count: totalAdhkar } = await supabase
+    .from("adhkars")
+    .select("*", { count: "exact", head: true });
+
   const completedToday = todayProgress?.filter((p) => p.is_completed).length || 0;
-  const totalToday = todayProgress?.length || 0;
+  const totalToday = totalAdhkar || 0;
 
   return (
     <div className="mx-auto w-full max-w-md px-4 py-6 pb-4 md:py-10">

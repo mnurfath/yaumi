@@ -48,7 +48,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-md items-center justify-between px-4">
-        <Link href="/" className="group flex items-center gap-2.5">
+        <Link href="/dashboard" className="group flex items-center gap-2.5">
           <span className="grid size-7 place-items-center rounded-md bg-primary text-base font-bold text-primary-foreground">
             Y
           </span>

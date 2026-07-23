@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { ArrowUpRight } from "lucide-react";
 import { CategoryIcon } from "@/components/category-icon";
+import { CategoriesBrowser } from "@/components/adhkar/categories-browser";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -26,6 +27,10 @@ export default async function CategoriesPage() {
     `)
     .order("display_order");
 
+  const { data: adhkars } = await supabase
+    .from("adhkars")
+    .select("id, title, arabic_text, latin_transliteration, english_translation, category:categories(name, slug)");
+
   return (
     <div className="mx-auto w-full max-w-md px-4 py-6 md:py-10">
       <div className="mb-8 max-w-2xl">
@@ -36,7 +41,13 @@ export default async function CategoriesPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <CategoriesBrowser
+        adhkars={(adhkars ?? []).map((a) => ({
+          ...a,
+          category: Array.isArray(a.category) ? (a.category[0] ?? null) : a.category,
+        }))}
+      >
+        <div className="grid gap-4 md:grid-cols-2">
         {categories?.map((category) => (
           <Link key={category.id} href={`/categories/${category.slug}`}>
             <Card className="group h-full cursor-pointer transition-colors hover:border-primary/40">
@@ -65,6 +76,7 @@ export default async function CategoriesPage() {
           </CardContent>
         </Card>
       )}
+      </CategoriesBrowser>
     </div>
   );
 }
