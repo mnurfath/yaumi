@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
+import { PullToRefresh } from "@/components/pull-to-refresh";
 
 export default async function AdminLayout({
   children,
@@ -29,7 +30,7 @@ export default async function AdminLayout({
       <AdminSidebar />
       <main className="flex-1 overflow-auto">
         <div className="container p-6">
-          {children}
+          <PullToRefresh>{children}</PullToRefresh>
         </div>
       </main>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -126,46 +127,48 @@ export function RecommendedAdhkarWidget() {
   const remaining = adhkars.length - 5;
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center gap-2">
-          <div className="flex size-7 items-center justify-center rounded-md bg-primary/10">
-            <Sparkles className="h-3.5 w-3.5 text-primary" />
+    <Link href="/recommended" className="block transition-opacity hover:opacity-90">
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <div className="flex size-7 items-center justify-center rounded-md bg-primary/10">
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
+            </div>
+            <CardTitle>Recommended now</CardTitle>
           </div>
-          <CardTitle>Recommended now</CardTitle>
-        </div>
-        <CardAction>
-          <Badge>{event.name}</Badge>
-        </CardAction>
-      </CardHeader>
-      <CardContent>
-        {adhkars.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            No adhkar linked to this time yet.
-          </p>
-        ) : (
-          <ul className="-mx-2">
-            {visible.map((a, i) => (
-              <li
-                key={i}
-                className="flex items-center justify-between rounded-md px-2 py-1.5"
-              >
-                <span className="text-sm font-medium">{a.title}</span>
-                {a.target_count > 1 && (
-                  <span className="text-sm text-muted-foreground">
-                    &times;{a.target_count}
-                  </span>
-                )}
-              </li>
-            ))}
-            {remaining > 0 && (
-              <li className="px-2 py-1 text-sm text-muted-foreground">
-                + {remaining} more
-              </li>
-            )}
-          </ul>
-        )}
-      </CardContent>
-    </Card>
+          <CardAction>
+            <Badge>{event.name}</Badge>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
+          {adhkars.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              No adhkar linked to this time yet.
+            </p>
+          ) : (
+            <ul className="-mx-2">
+              {visible.map((a, i) => (
+                <li
+                  key={i}
+                  className="flex items-center justify-between rounded-md px-2 py-1.5"
+                >
+                  <span className="text-sm font-medium">{a.title}</span>
+                  {a.target_count > 1 && (
+                    <span className="text-sm text-muted-foreground">
+                      &times;{a.target_count}
+                    </span>
+                  )}
+                </li>
+              ))}
+              {remaining > 0 && (
+                <li className="px-2 py-1 text-sm text-muted-foreground">
+                  + {remaining} more
+                </li>
+              )}
+            </ul>
+          )}
+        </CardContent>
+      </Card>
+    </Link>
   );
 }

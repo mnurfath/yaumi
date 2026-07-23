@@ -244,3 +244,23 @@ export async function getProgressForCategory(categorySlug: string) {
 export async function getRecommendedAdhkarsAction(eventSlug: string) {
   return getRecommendedAdhkars(eventSlug);
 }
+
+export async function getProgressForAdhkars(adhkarIds: string[]) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user || adhkarIds.length === 0) {
+    return null;
+  }
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const { data: progress } = await supabase
+    .from("user_progress")
+    .select("adhkar_id, completed_count, is_completed")
+    .eq("user_id", user.id)
+    .eq("date", today)
+    .in("adhkar_id", adhkarIds);
+
+  return progress || [];
+}

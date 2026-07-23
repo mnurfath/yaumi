@@ -1,5 +1,6 @@
 import { Header } from "@/components/layout/header";
 import { BottomNav } from "@/components/layout/bottom-nav";
+import { PullToRefresh } from "@/components/pull-to-refresh";
 
 export default function UserLayout({
   children,
@@ -9,7 +10,9 @@ export default function UserLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 pb-16">{children}</main>
+      <main className="flex-1 pb-16">
+        <PullToRefresh>{children}</PullToRefresh>
+      </main>
       <BottomNav />
     </div>
   );
